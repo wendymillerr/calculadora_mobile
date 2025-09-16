@@ -213,7 +213,7 @@
             app:cornerRadius="8dp" app:strokeWidth="1dp" app:strokeColor="@android:color/darker_gray"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnClear"
+            android:id="@+id/btnBackspace"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_row="1"
@@ -229,7 +229,7 @@
             app:cornerRadius="8dp" app:strokeWidth="1dp" app:strokeColor="@android:color/darker_gray"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnBackspace"
+            android:id="@+id/btnClear"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_row="1"
