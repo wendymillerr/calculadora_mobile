@@ -6,27 +6,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:padding="16dp">
+    android:padding="20dp">
 
-
+    <!-- TextView responsivo -->
     <TextView
         android:id="@+id/txtResultado"
-        android:layout_width="374dp"
-        android:layout_height="230dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/borda_textview"
-        android:gravity="end"
+        android:gravity="end|center_vertical"
+        android:layout_marginTop="50dp"
+
         android:padding="20dp"
         android:text="0"
         android:textColor="@android:color/black"
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        android:paddingEnd="20dp"/>
 
+    <!-- Guideline para controlar a proporção do display -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.45" />
+
+    <!-- GridLayout totalmente responsivo -->
     <GridLayout
         android:id="@+id/gridButtons"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="120dp"
         android:alignmentMode="alignMargins"
         android:columnCount="5"
         android:columnOrderPreserved="false"
@@ -34,314 +48,337 @@
         android:useDefaultMargins="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtResultado"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toBottomOf="@id/guideline">
 
-        <!-- Linha 1 -->
+        <!-- LINHA 1 - Todos os botões com rowWeight -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnQuadrado"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="0"
+            android:layout_rowWeight="1"
             android:layout_column="0"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="×"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/verde_amarelado" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRaiz"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="0"
+            android:layout_rowWeight="1"
             android:layout_column="1"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="√"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/verde_amarelado" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnParentesesE"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="0"
+            android:layout_rowWeight="1"
             android:layout_column="2"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="("
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/verde_amarelado" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnParentesesD"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="0"
+            android:layout_rowWeight="1"
             android:layout_column="3"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text=")"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/verde_amarelado" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnIgual"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="0"
+            android:layout_rowWeight="1"
             android:layout_column="4"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="="
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/vermelho_claro" />
 
-        <!-- Linha 2 -->
+        <!-- LINHA 2 - Padrão repetido para todos -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn7"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="1"
+            android:layout_rowWeight="1"
             android:layout_column="0"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="7"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/amarelo" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn8"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="1"
+            android:layout_rowWeight="1"
             android:layout_column="1"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="8"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/amarelo" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn9"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="1"
+            android:layout_rowWeight="1"
             android:layout_column="2"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="9"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/amarelo" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnClear"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="1"
+            android:layout_rowWeight="1"
             android:layout_column="3"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="D"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/vermelho_claro" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnBackspace"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="1"
+            android:layout_rowWeight="1"
             android:layout_column="4"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="A"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/vermelho_claro" />
 
-        <!-- Linha 3 -->
+        <!-- LINHA 3 -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn4"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="2"
+            android:layout_rowWeight="1"
             android:layout_column="0"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="4"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/amarelo" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn5"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="2"
+            android:layout_rowWeight="1"
             android:layout_column="1"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="5"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/amarelo" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn6"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="2"
+            android:layout_rowWeight="1"
             android:layout_column="2"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="6"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/amarelo" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnMultiplicar"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="2"
+            android:layout_rowWeight="1"
             android:layout_column="3"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="×"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/vermelho_claro" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDividir"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="2"
+            android:layout_rowWeight="1"
             android:layout_column="4"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="÷"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/vermelho_claro" />
 
-        <!-- Linha 4 -->
+        <!-- LINHA 4 -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn1"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="3"
+            android:layout_rowWeight="1"
             android:layout_column="0"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="1"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/amarelo" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn2"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="3"
+            android:layout_rowWeight="1"
             android:layout_column="1"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="2"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/amarelo" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn3"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="3"
+            android:layout_rowWeight="1"
             android:layout_column="2"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="3"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/amarelo" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSomar"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="3"
+            android:layout_rowWeight="1"
             android:layout_column="3"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="+"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/vermelho_claro" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSubtrair"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="3"
+            android:layout_rowWeight="1"
             android:layout_column="4"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="-"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/vermelho_claro" />
 
-        <!-- Linha 5 -->
+        <!-- LINHA 5 -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn0"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="4"
+            android:layout_rowWeight="1"
             android:layout_column="0"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="0"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/amarelo" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnPonto"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="4"
+            android:layout_rowWeight="1"
             android:layout_column="1"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="."
-            android:textSize="26sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/amarelo" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnHist"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="4"
+            android:layout_rowWeight="1"
             android:layout_column="2"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="H"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/amarelo" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnVoltar"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="4"
+            android:layout_rowWeight="1"
             android:layout_column="3"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="b"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/vermelho_claro" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAvanca"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="0dp"
             android:layout_row="4"
+            android:layout_rowWeight="1"
             android:layout_column="4"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="A"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:backgroundTint="@color/vermelho_claro" />
 
     </GridLayout>
