@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF8dce90</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="amarelo">#FFffdb31</color>
+    <color name="verde_claro">#FF8dce90</color>    <!-- Verde claro -->
+    <color name="vermelho_claro">#FFfc6266</color> <!-- Vermelho claro -->
+    <color name="cinza_claro">#FFf4f4f4</color>    <!-- Cinza muito claro -->
+    <color name="laranja">#FFfbbe5c</color>        <!-- Laranja -->
+    <color name="verde_amarelado">#FFbbd56c</color><!-- Verde amarelado -->
+</resources>
