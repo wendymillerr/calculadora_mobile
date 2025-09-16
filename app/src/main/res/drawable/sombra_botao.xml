@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- CAMADA DA SOMBRA CIRCULAR (cinza escuro com mais espaço em baixo) -->
+    <item
+        android:left="6dp"
+        android:top="6dp"
+        android:right="6dp"
+        android:bottom="12dp">  <!-- 12dp para baixo para sombra mais alongada -->
+
+        <shape android:shape="oval">  <!-- oval para formato circular -->
+            <solid android:color="#66000000" />  <!-- Cinza escuro (66 = 40% de opacidade) -->
+        </shape>
+    </item>
+
+    <!-- ESPAÇO PARA O BOTÃO CIRCULAR -->
+    <item
+        android:left="0dp"
+        android:top="0dp"
+        android:right="0dp"
+        android:bottom="0dp">
+        <!-- Espaço vazio para o botão -->
+    </item>
+
+</layer-list>

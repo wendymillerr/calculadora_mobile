@@ -27,6 +27,36 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         android:paddingEnd="20dp"/>
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardElevation="5dp"
+        app:cardCornerRadius="25dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/txtResultado"
+        app:layout_constraintBottom_toTopOf="@id/gridButtons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="16dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCircularLaranja"
+            android:layout_width="50dp"
+            android:layout_height="60dp"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            app:icon="@drawable/icon_lista"
+            app:iconSize="25dp"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            app:backgroundTint="@color/laranja"
+
+            app:cornerRadius="30dp"
+            app:strokeColor="@android:color/white"
+            app:strokeWidth="1dp"/>
+
+    </androidx.cardview.widget.CardView>
+
     <!-- Guideline para controlar a proporção do display -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -61,9 +91,11 @@
             android:layout_column="0"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
-            app:cornerRadius="8dp" app:strokeWidth="2dp" app:strokeColor="@android:color/darker_gray"
-            android:text="×"
-            android:textSize="20sp"
+            app:cornerRadius="8dp" app:strokeWidth="1dp" app:strokeColor="@android:color/darker_gray"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            app:icon="@drawable/icon_exponente"
+            app:iconSize="30dp"
+            app:iconGravity="end"
             app:backgroundTint="@color/verde_amarelado" />
 
         <com.google.android.material.button.MaterialButton
@@ -129,8 +161,9 @@
             android:layout_height="0dp"
             android:layout_row="1"
             android:layout_rowWeight="1"
+            android:textColor="@color/black"
             android:layout_column="0"
-            app:cornerRadius="8dp" app:strokeWidth="2dp" app:strokeColor="@android:color/darker_gray"
+            app:cornerRadius="8dp" app:strokeWidth="1dp" app:strokeColor="@android:color/darker_gray"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="7"
@@ -144,6 +177,7 @@
             android:layout_row="1"
             android:layout_rowWeight="1"
             android:layout_column="1"
+            android:textColor="@color/black"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="8"
@@ -158,6 +192,7 @@
             android:layout_row="1"
             android:layout_rowWeight="1"
             android:layout_column="2"
+            android:textColor="@color/black"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="9"
@@ -203,6 +238,7 @@
             android:layout_column="0"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
+            android:textColor="@color/black"
             android:text="4"
             android:textSize="20sp"
             app:backgroundTint="@color/amarelo"
@@ -216,6 +252,7 @@
             android:layout_rowWeight="1"
             android:layout_column="1"
             android:layout_columnWeight="1"
+            android:textColor="@color/black"
             app:cornerRadius="8dp" app:strokeWidth="1dp" app:strokeColor="@android:color/darker_gray"
             android:layout_margin="4dp"
             android:text="5"
@@ -231,6 +268,7 @@
             android:layout_column="2"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
+            android:textColor="@color/black"
             android:text="6"
             android:textSize="20sp"
             app:backgroundTint="@color/amarelo"
@@ -276,6 +314,7 @@
             app:cornerRadius="8dp" app:strokeWidth="1dp" app:strokeColor="@android:color/darker_gray"
             android:layout_margin="4dp"
             android:text="1"
+            android:textColor="@color/black"
             android:textSize="20sp"
             app:backgroundTint="@color/amarelo" />
 
@@ -291,6 +330,7 @@
             android:text="2"
             android:textSize="20sp"
             app:backgroundTint="@color/amarelo"
+            android:textColor="@color/black"
             app:cornerRadius="8dp" app:strokeWidth="2dp" app:strokeColor="@android:color/darker_gray"/>
 
         <com.google.android.material.button.MaterialButton
@@ -303,6 +343,7 @@
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="3"
+            android:textColor="@color/black"
             android:textSize="20sp"
             app:backgroundTint="@color/amarelo"
             app:cornerRadius="8dp" app:strokeWidth="1dp" app:strokeColor="@android:color/darker_gray"/>
@@ -346,6 +387,7 @@
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="0"
+            android:textColor="@color/black"
             android:textSize="20sp"
             app:backgroundTint="@color/amarelo"
             app:cornerRadius="8dp" app:strokeWidth="1dp" app:strokeColor="@android:color/darker_gray"/>
@@ -357,6 +399,7 @@
             android:layout_row="4"
             android:layout_rowWeight="1"
             android:layout_column="1"
+            android:textColor="@color/black"
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="."
@@ -374,6 +417,7 @@
             android:layout_columnWeight="1"
             android:layout_margin="4dp"
             android:text="Hist"
+            android:textColor="@color/black"
             app:cornerRadius="8dp" app:strokeWidth="1dp" app:strokeColor="@android:color/darker_gray"
             android:textSize="14sp"
             app:backgroundTint="@color/amarelo" />
