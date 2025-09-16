@@ -1,17 +1,19 @@
 package com.example.calculadora
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.TextView
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.calculadora.R.id.txtResultado
 import com.google.android.material.button.MaterialButton
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var tvDisplay: TextView
+    private lateinit var txtResultado: EditText
 
-    private var currentInput: String = ""
+
+    private val calculationHistory = mutableListOf<String>()
     private var fullExpression: String = ""
     private var operand: Double? = null
     private var pendingOp: String? = null
@@ -21,8 +23,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // TextView de display
-        tvDisplay = findViewById(txtResultado)
+        // EditText de display
+        txtResultado = findViewById(R.id.txtResultado)
 
         // Botões de dígitos
         val digits = listOf(
@@ -53,6 +55,8 @@ class MainActivity : AppCompatActivity() {
             findViewById<Button>(id).setOnClickListener { onOperator(op) }
         }
 
+
+
         // Botão igual
         findViewById<Button>(R.id.btnIgual).setOnClickListener { onEquals() }
 
@@ -76,115 +80,206 @@ class MainActivity : AppCompatActivity() {
         // Botão de raiz quadrada (√)
         findViewById<MaterialButton>(R.id.btnRaiz).setOnClickListener { calculateSquareRoot() }
 
-        updateDisplay()
+        findViewById<MaterialButton>(R.id.btnHist).setOnClickListener {
+            showHistory()
+        }
     }
 
     private fun appendDigit(d: String) {
-        if (resetInput) {
-            currentInput = ""
-            resetInput = false
+        val cursorPosition = txtResultado.selectionStart
+        val currentText = txtResultado.text.toString()
+
+        // Verifica se pode adicionar ponto decimal
+        if (d == ".") {
+            val currentNumber = getSelectedOrCurrentNumber(cursorPosition, currentText)
+            if (currentNumber.contains(".")) return
         }
 
-        if (d == "." && currentInput.contains(".")) return
-        currentInput = if (currentInput == "0") d else currentInput + d
-        updateDisplay()
+        // Insere o dígito na posição do cursor
+        val newText = currentText.substring(0, cursorPosition) + d + currentText.substring(cursorPosition)
+        txtResultado.setText(newText)
+        txtResultado.setSelection(cursorPosition + 1)
     }
 
     private fun appendParenthesis(parenthesis: String) {
-        if (resetInput) {
-            currentInput = ""
-            resetInput = false
-        }
+        val cursorPosition = txtResultado.selectionStart
+        val currentText = txtResultado.text.toString()
 
-        currentInput = if (currentInput == "0") parenthesis else currentInput + parenthesis
-        updateDisplay()
+        // Insere o parêntese na posição do cursor
+        val newText = currentText.substring(0, cursorPosition) + parenthesis + currentText.substring(cursorPosition)
+        txtResultado.setText(newText)
+        txtResultado.setSelection(cursorPosition + 1)
     }
 
     private fun onOperator(op: String) {
-        if (currentInput.isNotEmpty()) {
-            // Adiciona o número atual à expressão completa
-            if (fullExpression.isNotEmpty() && !fullExpression.endsWith(" ")) {
-                fullExpression += " $currentInput"
-            } else {
-                fullExpression += currentInput
-            }
+        val cursorPosition = txtResultado.selectionStart
+        val currentText = txtResultado.text.toString()
 
-            // Adiciona o operador à expressão completa
-            fullExpression += " $op "
-
-            val value = currentInput.toDoubleOrNull()
-            if (value != null) {
-                if (operand == null) {
-                    operand = value
-                } else {
-                    operand = performOperation(operand!!, value, pendingOp)
-                }
-            }
-            resetInput = true
-        } else if (fullExpression.isNotEmpty() && pendingOp != null) {
-            // Permite trocar o operador se não houver novo número
-            fullExpression = fullExpression.dropLast(3) + " $op "
+        if (currentText.isNotEmpty()) {
+            // Adiciona o operador na posição do cursor
+            val newText = currentText.substring(0, cursorPosition) + " $op " + currentText.substring(cursorPosition)
+            txtResultado.setText(newText)
+            txtResultado.setSelection(cursorPosition + 3) // Move cursor após o operador com espaços
         }
-
-        pendingOp = op
-        updateDisplay()
     }
 
     private fun onEquals() {
-        if (operand != null && currentInput.isNotEmpty()) {
-            // Adiciona o último número à expressão completa
-            if (fullExpression.isNotEmpty() && !fullExpression.endsWith(" ")) {
-                fullExpression += " $currentInput"
-            } else {
-                fullExpression += currentInput
+        val expression = txtResultado.text.toString()
+        if (expression.isNotEmpty()) {
+            try {
+                // Avalia a expressão matemática completa
+                val result = evaluateExpression(expression)
+
+                // Mostra o resultado
+                val resultText = "$expression = $result"
+                txtResultado.setText(resultText)
+                txtResultado.setSelection(resultText.length)
+
+                // Adiciona ao histórico
+                addToHistory(expression, result.toString())
+
+            } catch (e: Exception) {
+                Toast.makeText(this, "Erro na expressão: ${e.message}", Toast.LENGTH_SHORT).show()
             }
-
-            val value = currentInput.toDoubleOrNull() ?: return
-            val result = performOperation(operand!!, value, pendingOp)
-
-            // Mostra a expressão completa e o resultado
-            fullExpression += " = $result"
-            currentInput = result.toString()
-            operand = null
-            pendingOp = null
-            resetInput = true
-            updateDisplay()
         }
     }
 
-    private fun performOperation(a: Double, b: Double, op: String?): Double {
-        return when (op) {
-            "+" -> a + b
-            "-" -> a - b
-            "×" -> a * b
-            "÷" -> if (b == 0.0) {
-                Toast.makeText(this, "Divisão por zero", Toast.LENGTH_SHORT).show()
-                a
-            } else a / b
-            else -> b
+
+
+    private fun addToHistory(expression: String, result: String) {
+        // Formato: expressão|resultado
+        val historyItem = "$expression|$result"
+        calculationHistory.add(0, historyItem) // Adiciona no início da lista
+
+        // Limita o histórico aos últimos 50 itens
+        if (calculationHistory.size > 50) {
+            calculationHistory.removeAt(calculationHistory.size - 1)
         }
+    }
+
+    private fun showHistory() {
+        try {
+            if (calculationHistory.isNotEmpty()) {
+                val intent = Intent(this, HistoryActivity::class.java)
+                intent.putStringArrayListExtra("history", ArrayList(calculationHistory))
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "Nenhum cálculo no histórico", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(this, "Tela de histórico não disponível", Toast.LENGTH_SHORT).show()
+            e.printStackTrace()
+        } catch (e: SecurityException) {
+            Toast.makeText(this, "Permissão negada para abrir histórico", Toast.LENGTH_SHORT).show()
+            e.printStackTrace()
+        } catch (e: Exception) {
+            Toast.makeText(this, "Erro ao abrir histórico: ${e.message}", Toast.LENGTH_SHORT).show()
+            e.printStackTrace()
+        }
+    }
+
+    private fun evaluateExpression(expression: String): Double {
+        // Remove espaços em branco
+        var expr = expression.replace(" ", "")
+
+        // Processa parênteses primeiro
+        while (expr.contains('(')) {
+            val openParen = expr.lastIndexOf('(')
+            val closeParen = expr.indexOf(')', openParen)
+
+            if (closeParen == -1) throw IllegalArgumentException("Parênteses não balanceados")
+
+            val innerExpr = expr.substring(openParen + 1, closeParen)
+            val innerResult = evaluateSimpleExpression(innerExpr)
+
+            expr = expr.substring(0, openParen) + innerResult + expr.substring(closeParen + 1)
+        }
+
+        // Avalia a expressão sem parênteses
+        return evaluateSimpleExpression(expr)
+    }
+
+    private fun evaluateSimpleExpression(expression: String): Double {
+        var expr = expression
+
+        // Processa multiplicação e divisão
+        val mulDivRegex = Regex("""([\d\.]+)\s*([×÷])\s*([\d\.]+)""")
+        var match = mulDivRegex.find(expr)
+        while (match != null) {
+            val (left, op, right) = match.destructured
+            val leftNum = left.toDouble()
+            val rightNum = right.toDouble()
+            val result = when (op) {
+                "×" -> leftNum * rightNum
+                "÷" -> {
+                    if (rightNum == 0.0) throw ArithmeticException("Divisão por zero")
+                    leftNum / rightNum
+                }
+                else -> throw IllegalArgumentException("Operador inválido: $op")
+            }
+            expr = expr.replaceRange(match.range, result.toString())
+            match = mulDivRegex.find(expr)
+        }
+
+        // Processa adição e subtração
+        val addSubRegex = Regex("""([\d\.]+)\s*([+\-])\s*([\d\.]+)""")
+        match = addSubRegex.find(expr)
+        while (match != null) {
+            val (left, op, right) = match.destructured
+            val leftNum = left.toDouble()
+            val rightNum = right.toDouble()
+            val result = when (op) {
+                "+" -> leftNum + rightNum
+                "-" -> leftNum - rightNum
+                else -> throw IllegalArgumentException("Operador inválido: $op")
+            }
+            expr = expr.replaceRange(match.range, result.toString())
+            match = addSubRegex.find(expr)
+        }
+
+        return expr.toDouble()
     }
 
     private fun calculateSquare() {
-        if (currentInput.isNotEmpty()) {
-            val value = currentInput.toDoubleOrNull()
+        val cursorPosition = txtResultado.selectionStart
+        val currentText = txtResultado.text.toString()
+
+        if (currentText.isNotEmpty()) {
+            val selectedText = getSelectedOrCurrentNumber(cursorPosition, currentText)
+            val value = selectedText.toDoubleOrNull()
+
             if (value != null) {
-                fullExpression = "($currentInput)² = "
-                currentInput = (value * value).toString()
-                resetInput = true
-                updateDisplay()
+                val square = value * value
+                val newText = currentText.replaceRange(
+                    getNumberStartIndex(cursorPosition, currentText),
+                    getNumberEndIndex(cursorPosition, currentText),
+                    square.toString()
+                )
+
+                txtResultado.setText(newText)
+                txtResultado.setSelection(getNumberStartIndex(cursorPosition, newText) + square.toString().length)
             }
         }
     }
 
     private fun calculateSquareRoot() {
-        if (currentInput.isNotEmpty()) {
-            val value = currentInput.toDoubleOrNull()
+        val cursorPosition = txtResultado.selectionStart
+        val currentText = txtResultado.text.toString()
+
+        if (currentText.isNotEmpty()) {
+            val selectedText = getSelectedOrCurrentNumber(cursorPosition, currentText)
+            val value = selectedText.toDoubleOrNull()
+
             if (value != null && value >= 0) {
-                fullExpression = "√($currentInput) = "
-                currentInput = Math.sqrt(value).toString()
-                resetInput = true
-                updateDisplay()
+                val sqrt = Math.sqrt(value)
+                val newText = currentText.replaceRange(
+                    getNumberStartIndex(cursorPosition, currentText),
+                    getNumberEndIndex(cursorPosition, currentText),
+                    sqrt.toString()
+                )
+
+                txtResultado.setText(newText)
+                txtResultado.setSelection(getNumberStartIndex(cursorPosition, newText) + sqrt.toString().length)
             } else if (value != null && value < 0) {
                 Toast.makeText(this, "Não é possível calcular raiz de número negativo", Toast.LENGTH_SHORT).show()
             }
@@ -192,58 +287,76 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun clearAll() {
-        currentInput = ""
+        txtResultado.setText("")
+        txtResultado.setSelection(0)
         fullExpression = ""
         operand = null
         pendingOp = null
         resetInput = false
-        updateDisplay()
     }
 
     private fun backspace() {
-        if (currentInput.isNotEmpty()) {
-            currentInput = currentInput.dropLast(1)
-            if (currentInput.isEmpty()) currentInput = "0"
-            updateDisplay()
+        val cursorPosition = txtResultado.selectionStart
+        if (cursorPosition > 0) {
+            val currentText = txtResultado.text.toString()
+            val newText = currentText.substring(0, cursorPosition - 1) + currentText.substring(cursorPosition)
+            txtResultado.setText(newText)
+            txtResultado.setSelection(cursorPosition - 1)
         }
     }
 
     private fun moveCursor(direction: Int) {
-        // Esta função é mais simbólica, já que o TextView padrão não permite
-        // controle direto do cursor via código de forma simples
-        Toast.makeText(this,
-            if (direction > 0) "Cursor avançado" else "Cursor retrocedido",
-            Toast.LENGTH_SHORT).show()
+        val currentPosition = txtResultado.selectionStart
+        val newPosition = currentPosition + direction
+
+        if (newPosition >= 0 && newPosition <= txtResultado.text.length) {
+            txtResultado.setSelection(newPosition)
+        }
     }
 
-    private fun updateDisplay() {
-        // Mostra a expressão completa se existir, senão mostra o input atual
-        val displayText = if (fullExpression.isNotEmpty()) {
-            "$fullExpression${if (!resetInput) currentInput else ""}"
-        } else {
-            currentInput.ifEmpty { "0" }
-        }
+    // Funções auxiliares para manipulação de números
+    private fun getSelectedOrCurrentNumber(cursorPosition: Int, text: String): String {
+        val start = getNumberStartIndex(cursorPosition, text)
+        val end = getNumberEndIndex(cursorPosition, text)
+        return text.substring(start, end)
+    }
 
-        tvDisplay.text = displayText
+    private fun getNumberStartIndex(cursorPosition: Int, text: String): Int {
+        var start = cursorPosition
+        while (start > 0 && isPartOfNumber(text[start - 1])) {
+            start--
+        }
+        return start
+    }
+
+    private fun getNumberEndIndex(cursorPosition: Int, text: String): Int {
+        var end = cursorPosition
+        while (end < text.length && isPartOfNumber(text[end])) {
+            end++
+        }
+        return end
+    }
+
+    private fun isPartOfNumber(char: Char): Boolean {
+        return char.isDigit() || char == '.' || char == '-' || char == 'E' || char == 'e'
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString("currentInput", currentInput)
-        outState.putString("fullExpression", fullExpression)
-        outState.putDouble("operand", operand ?: Double.NaN)
-        outState.putString("pendingOp", pendingOp)
-        outState.putBoolean("resetInput", resetInput)
+        outState.putString("currentText", txtResultado.text.toString())
+        outState.putStringArrayList("calculationHistory", ArrayList(calculationHistory))
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        currentInput = savedInstanceState.getString("currentInput", "")
-        fullExpression = savedInstanceState.getString("fullExpression", "")
-        val opnd = savedInstanceState.getDouble("operand", Double.NaN)
-        operand = if (opnd.isNaN()) null else opnd
-        pendingOp = savedInstanceState.getString("pendingOp")
-        resetInput = savedInstanceState.getBoolean("resetInput", false)
-        updateDisplay()
+        val currentText = savedInstanceState.getString("currentText", "")
+        txtResultado.setText(currentText)
+        txtResultado.setSelection(currentText.length)
+
+        val savedHistory = savedInstanceState.getStringArrayList("calculationHistory")
+        savedHistory?.let {
+            calculationHistory.clear()
+            calculationHistory.addAll(it)
+        }
     }
 }
