@@ -9,23 +9,32 @@
     android:padding="20dp">
 
 
-    <TextView
+    <EditText
         android:id="@+id/txtResultado"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/borda_textview"
         android:gravity="top|start"
         android:layout_marginTop="50dp"
-
+        android:textStyle="bold"
         android:padding="20dp"
         android:text="0"
-        android:textColor="@android:color/black"
+        android:textColor="#5C5C5C"
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
-        android:paddingEnd="20dp"/>
+        android:paddingEnd="20dp"
+        android:cursorVisible="true"
+
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:inputType="none"
+        android:textCursorDrawable="@drawable/cursor_laranja"
+        android:textColorHint="#FFA500"
+        android:textColorLink="#FFA500"
+        />
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
@@ -431,7 +440,7 @@
             app:backgroundTint="@color/amarelo" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnVoltar"
+            android:id="@+id/btnAvancar"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_row="4"
@@ -446,7 +455,7 @@
             app:cornerRadius="8dp" app:strokeWidth="1dp" app:strokeColor="@android:color/darker_gray"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAvanca"
+            android:id="@+id/btnVoltar"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_row="4"
