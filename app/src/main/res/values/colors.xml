@@ -5,7 +5,7 @@
     <color name="amarelo">#FFffdb31</color>
     <color name="verde_claro">#FF8dce90</color>    <!-- Verde claro -->
     <color name="vermelho_claro">#FFfc6266</color> <!-- Vermelho claro -->
-    <color name="cinza_claro">#FFf4f4f4</color>    <!-- Cinza muito claro -->
+    <color name="cinza_claro">#E2E2E2</color>    <!-- Cinza muito claro -->
     <color name="laranja">#FFfbbe5c</color>        <!-- Laranja -->
     <color name="verde_amarelado">#FFbbd56c</color><!-- Verde amarelado -->
 </resources>
