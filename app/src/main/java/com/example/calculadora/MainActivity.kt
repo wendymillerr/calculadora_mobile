@@ -2,16 +2,19 @@ package com.example.calculadora
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.button.MaterialButton
 
 class MainActivity : AppCompatActivity() {
     private lateinit var txtResultado: EditText
-
+    private lateinit var sharedPreferences: SharedPreferences
 
     private val calculationHistory = mutableListOf<String>()
     private var fullExpression: String = ""
@@ -22,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        applySavedTheme();
 
         // EditText de display
         txtResultado = findViewById(R.id.txtResultado)
@@ -55,7 +59,18 @@ class MainActivity : AppCompatActivity() {
             findViewById<Button>(id).setOnClickListener { onOperator(op) }
         }
 
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
+        // EditText de display
+        txtResultado = findViewById(R.id.txtResultado)
+
+
+
+        // Botão de configurações
+        findViewById<MaterialButton>(R.id.btnConfiguracoes).setOnClickListener {
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
+        }
 
         // Botão igual
         findViewById<Button>(R.id.btnIgual).setOnClickListener { onEquals() }
@@ -123,20 +138,33 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun applySavedTheme() {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        val savedTheme = SettingsActivity.getCurrentTheme(prefs)
+        AppCompatDelegate.setDefaultNightMode(savedTheme)
+
+        delegate.applyDayNight()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Recarrega as configurações quando a activity retorna
+        applySavedTheme()
+    }
+
     private fun onEquals() {
         val expression = txtResultado.text.toString()
         if (expression.isNotEmpty()) {
             try {
-                // Avalia a expressão matemática completa
                 val result = evaluateExpression(expression)
+                val decimalPlaces = SettingsActivity.getDecimalPlaces(sharedPreferences)
 
-                // Mostra o resultado
-                val resultText = "$expression = $result"
+                val formattedResult = "%.${decimalPlaces}f".format(result)
+                val resultText = "$expression = $formattedResult"
                 txtResultado.setText(resultText)
                 txtResultado.setSelection(resultText.length)
 
-                // Adiciona ao histórico
-                addToHistory(expression, result.toString())
+                addToHistory(expression, formattedResult)
 
             } catch (e: Exception) {
                 Toast.makeText(this, "Erro na expressão: ${e.message}", Toast.LENGTH_SHORT).show()

@@ -9,4 +9,5 @@
     <color name="laranja">#FFfbbe5c</color>        <!-- Laranja -->
     <color name="verde_amarelado">#FFbbd56c</color><!-- Verde amarelado -->
     <color name="cinza_escuro">#5C5C5C</color>
+    <color name="md_theme_dark_primary">#D0BCFF</color>
 </resources>

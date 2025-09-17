@@ -26,7 +26,10 @@
         <activity
             android:name=".HistoryActivity"
             android:theme="@style/Theme.Calculadora" />
-
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Calculadora" />
 
     </application>
 
