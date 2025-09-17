@@ -14,7 +14,9 @@
         android:background="@color/verde_amarelado"
         app:navigationIcon="@drawable/icon_arrow_back"
 
-        app:titleTextColor="?attr/colorOnSurface" />
+        app:title="Configurações"
+
+        app:titleTextColor="@color/white" />
 
     <ScrollView
         android:layout_width="match_parent"
